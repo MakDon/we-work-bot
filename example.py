@@ -17,6 +17,13 @@ def hello_world_twice():
     bot.set_text('hello world again').sned()
 
 
+# ================= run ========================
+def run_forever():
+    # 每隔 60 秒发送一次 hello world
+    # 使用Bot.every() 设置间隔
+    wBot(url).set_text("hello world").send()
+
+
 # ============== 定时提醒 =======================
 def foo1():
     wBot(url).set_text("every 30 seconds").every(30).run()
@@ -40,7 +47,7 @@ def check_something(arg1, arg2, arg3=True):
 def foo3():
     wBot(url)\
         .set_text("every 30 seconds with condition")\
-        .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'})\
+        .check(check_something, args=['arg1', 'arg2'], kwargs={'arg3': 'arg3'})\
         .every(30)\
         .run()
 
@@ -53,8 +60,8 @@ def render_text(arg1, arg2, arg3=True):
 def foo4():
     # 当同时调用了 render_text 与 set_text 时，优先调用 render_text
     wBot(url)\
-        .render_text(render_text, ['render ', 'with '], {'arg3': 'function'})\
-        .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'})\
+        .render_text(render_text, args=['render ', 'with '], kwargs={'arg3': 'function'})\
+        .check(check_something, args=['arg1', 'arg2'], kwargs={'arg3': 'arg3'})\
         .every(30)\
         .run()
 
@@ -65,7 +72,7 @@ def foo5():
     wBot(url)\
         .set_check_counter(5)\
         .set_send_counter(3) \
-        .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'})\
+        .check(check_something, args=['arg1', 'arg2'], kwargs={'arg3': 'arg3'})\
         .set_text("every 30 seconds")\
         .every(30)\
         .run()
@@ -77,7 +84,7 @@ def foo6():
     bots.add_bot(url)\
         .set_check_counter(5)\
         .set_send_counter(3) \
-        .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'})\
+        .check(check_something, args=['arg1', 'arg2'], kwargs={'arg3': 'arg3'})\
         .set_text("every 30 seconds")\
         .every(30)
 
@@ -85,7 +92,7 @@ def foo6():
     bots.add_bot(url) \
         .set_check_counter(6) \
         .set_send_counter(5) \
-        .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'}) \
+        .check(check_something, args=['arg1', 'arg2'], kwargs={'arg3': 'arg3'}) \
         .set_text("every 10 minutes") \
         .every(minute=10)
 

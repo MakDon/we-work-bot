@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='weworkbot',
-    version='0.0.1',
+    version='0.1.0',
 
     description='A framework for creating bot for wechat work',
     url='https://github.com/MakDon/we-work-bot',

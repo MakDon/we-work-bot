@@ -29,15 +29,16 @@ class Bot(Thread):
         self._mentioned_mobile_list = []
         self._send_counter = -1
 
-    def __get_text__(self):
-        if self._text_render_fn:
-            return self._text_render_fn(*self._text_render_args, **self._text_render_kwargs)
-        elif self._text:
-            return self._text
-        else:
-            raise KeyError("请设置发送的消息")
-
     def every(self, second=0, minute=0, hour=0, day=0):
+        """
+        Send the message every x seconds. Example:
+        Bot(url).every(second=30).set_text('send every 30 seconds').run()
+        :param second: int
+        :param minute: int
+        :param hour: int
+        :param day: int
+        :return: self
+        """
         assert isinstance(second, int)
         assert isinstance(minute, int)
         assert isinstance(hour, int)
@@ -86,6 +87,14 @@ class Bot(Thread):
         self._text_render_args = args or []
         self._text_render_kwargs = kwargs or {}
         return self
+
+    def __get_text__(self):
+        if self._text_render_fn:
+            return self._text_render_fn(*self._text_render_args, **self._text_render_kwargs)
+        elif self._text:
+            return self._text
+        else:
+            raise KeyError("请设置发送的消息")
 
     def set_mentioned_list(self, ls):
         assert isinstance(ls, list)
@@ -141,7 +150,3 @@ class Bot(Thread):
                     self.send()
                 self._send_counter -= 1
             time.sleep(self._sleep_seconds)
-
-
-
-
