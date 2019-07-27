@@ -4,10 +4,6 @@ from weworkbot import Bot as wBot
 url = ""
 
 
-def time_2_dinner():
-    return True
-
-
 # ============ hello world ====================
 def hello_world():
     wBot(url).set_text("hello world").send()
@@ -47,6 +43,7 @@ def render_text(arg1, arg2, arg3=True):
 
 
 def foo4():
+    # 当同时调用了 render_text 与 set_text 时，优先调用 render_text
     wBot(url)\
         .render_text(render_text, ['render ', 'with '], {'arg3': 'function'})\
         .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'})\
