@@ -76,6 +76,7 @@ def foo6():
         .set_text("every 30 seconds")\
         .every(30)
 
+    # 在调用 check 6 次，或发送 5 次后停止运行
     bots.add_bot(url) \
         .set_check_counter(6) \
         .set_send_counter(5) \

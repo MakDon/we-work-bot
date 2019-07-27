@@ -1,4 +1,5 @@
 # we-work-bot 
+![](https://img.shields.io/pypi/v/weworkbot?color=blue)  
 对企业微信群聊机器人进行封装以方便使用的框架  
 企业微信群聊机器人官方文档点[这里](https://work.weixin.qq.com/api/doc#90000/90136/91770)  
 
