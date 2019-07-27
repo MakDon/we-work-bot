@@ -1,4 +1,5 @@
 from weworkbot import bot_mgr as bots
+from weworkbot import BotMgr
 from weworkbot import Bot as wBot
 
 url = ""
@@ -7,6 +8,13 @@ url = ""
 # ============ hello world ====================
 def hello_world():
     wBot(url).set_text("hello world").send()
+
+
+# ============ hello world ====================
+def hello_world_twice():
+    bot = wBot(url)
+    bot.set_text('hello world').send()
+    bot.set_text('hello world again').sned()
 
 
 # ============== 定时提醒 =======================
@@ -82,3 +90,49 @@ def foo6():
         .every(minute=10)
 
     bots.run()
+
+
+# ============== 或创建多组 bot ==================
+def foo7():
+
+    bots1 = BotMgr()
+    bots2 = BotMgr()
+    bots3 = BotMgr()
+
+    bot1 = wBot(url)\
+        .set_check_counter(5)\
+        .set_send_counter(3) \
+        .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'})\
+        .set_text("every 30 seconds")\
+        .every(30)
+
+    bot2 = wBot(url) \
+        .set_check_counter(6) \
+        .set_send_counter(5) \
+        .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'}) \
+        .set_text("every 10 minutes") \
+        .every(minute=10)
+
+    bot3 = wBot(url) \
+        .set_check_counter(6) \
+        .set_send_counter(5) \
+        .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'}) \
+        .set_text("every 10 minutes") \
+        .every(hour=1)
+
+    bots1.append(bot1)
+    bots1.append(bot2)
+
+    bots2.append(bot2)
+    bots2.append(bot3)
+
+    bots3.append(bot1)
+    bots3.append(bot3)
+
+    bots1.start()
+    bots2.start()
+    bots3.start()
+
+    bots1.join()
+    bots2.join()
+    bots3.join()

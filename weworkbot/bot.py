@@ -3,6 +3,7 @@ import requests
 import logging
 import time
 import sys
+import re
 from threading import Thread
 
 DEBUG = sys.flags.debug or 'pydevd' in sys.modules
@@ -13,7 +14,7 @@ class Bot(Thread):
     def __init__(self, url):
         super().__init__()
         self.msg_type = 'text'
-        # TODO check url
+        assert re.match(r'https://qyapi.weixin.qq.com/cgi-bin/webhook/send\?key', url)
         self.url = url
         self._sleep_seconds = 60
         self._check_counter = -1
