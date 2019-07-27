@@ -5,7 +5,7 @@ import time
 import sys
 from threading import Thread
 
-DEBUG = sys.flags.debug
+DEBUG = sys.flags.debug or 'pydevd' in sys.modules
 
 
 class Bot(Thread):
@@ -36,8 +36,15 @@ class Bot(Thread):
         else:
             raise KeyError("请设置发送的消息")
 
-    def every(self, second=60, minute=0, hour=0, day=0):
+    def every(self, second=0, minute=0, hour=0, day=0):
+        assert isinstance(second, int)
+        assert isinstance(minute, int)
+        assert isinstance(hour, int)
+        assert isinstance(day, int)
         self._sleep_seconds = second + minute*60 + hour*3600 + day*86400
+        if self._sleep_seconds == 0:
+            self._sleep_seconds = 60
+            logging.warning("Bot.every() 解析到每 0 秒自行一次，被重设为每 60 秒")
         return self
 
     def check(self, fn, args=None, kwargs=None):
@@ -89,11 +96,13 @@ class Bot(Thread):
         self._mentioned_mobile_list = ls
         return self
 
-    def set_checker_counter(self, n=-1):
+    def set_check_counter(self, n=-1):
+        assert isinstance(n, int)
         self._check_counter = n
         return self
 
     def set_send_counter(self, n=-1):
+        assert isinstance(n, int)
         self._send_counter = n
         return self
 
@@ -119,10 +128,16 @@ class Bot(Thread):
             raise TypeError('Not supported message type')
 
     def run(self):
+        debug_msgs = []
         while self._send_counter and self._check_counter:
             self._check_counter -= 1
             if self.__check__():
-                self.send()
+                if DEBUG:
+                    msg = self.send()
+                    debug_msgs.append(msg)
+                    print(msg)
+                else:
+                    self.send()
                 self._send_counter -= 1
             time.sleep(self._sleep_seconds)
 
