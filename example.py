@@ -23,7 +23,7 @@ def foo2():
     wBot(url)\
         .set_text("every 30 seconds")\
         .set_mentioned_list(["wangqing", "@all"])\
-        .set_mentioned_mobile_list(["13800001111","@all"])\
+        .set_mentioned_mobile_list(["13800001111", "@all"])\
         .every(30)\
         .run()
 
@@ -48,7 +48,7 @@ def render_text(arg1, arg2, arg3=True):
 
 def foo4():
     wBot(url)\
-        .render_text(render_text, ['render', 'with'], {'arg3': 'function'})\
+        .render_text(render_text, ['render ', 'with '], {'arg3': 'function'})\
         .check(check_something, ['arg1', 'arg2'], {'arg3': 'arg3'})\
         .every(30)\
         .run()
