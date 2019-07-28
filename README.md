@@ -7,7 +7,11 @@
 Python 3.5+   
 requests
 
-## Quick start
+## Install
+
+`pip3 install weworkbot`
+
+## Quick Start
 
     from weworkbot import Bot as wBot
     def hello_world():
@@ -17,7 +21,14 @@ requests
 
 封装了定时任务、提醒列表、发送计数等功能，详见[examples](https://github.com/MakDon/we-work-bot/blob/master/example.py)
 
-## contribute guide
+## 更新计划
+
+- [ ] 添加单测以及 Travis CI 配置
+- [ ] 添加 Markdown 类型消息的支持
+- [ ] 添加 image 类型消息的支持
+- [ ] 添加 图文类型消息的支持
+
+## Contributing
 
 如果有使用上的问题、需要新功能、或发现了 bug，请[创建新 issue](https://github.com/MakDon/we-work-bot/issues)    
 或直接[提交 pull request](https://github.com/MakDon/we-work-bot/pulls)
