@@ -4,9 +4,11 @@ import logging
 import time
 import sys
 import re
+import os
 from threading import Thread
 
 DEBUG = sys.flags.debug or 'pydevd' in sys.modules
+TEST = 'PYTEST_CURRENT_TEST' in os.environ
 
 
 class Bot(Thread):
@@ -14,7 +16,7 @@ class Bot(Thread):
     def __init__(self, url):
         super().__init__()
         self.msg_type = 'text'
-        assert re.match(r'https://qyapi.weixin.qq.com/cgi-bin/webhook/send\?key', url)
+        assert re.match(r'https://qyapi.weixin.qq.com/cgi-bin/webhook/send\?key=', url)
         self.url = url
         self._sleep_seconds = 60
         self._check_counter = -1
@@ -126,7 +128,7 @@ class Bot(Thread):
                                 "mentioned_mobile_list": self._mentioned_mobile_list
                                 }
                         }
-            if DEBUG:
+            if DEBUG or TEST:
                 return self.url, req_body
             else:
                 rsp = requests.post(self.url, json=req_body)
@@ -142,11 +144,13 @@ class Bot(Thread):
         while self._send_counter and self._check_counter:
             self._check_counter -= 1
             if self.__check__():
-                if DEBUG:
+                if DEBUG or TEST:
                     msg = self.send()
                     debug_msgs.append(msg)
-                    print(msg)
                 else:
                     self.send()
                 self._send_counter -= 1
             time.sleep(self._sleep_seconds)
+        if DEBUG or TEST:
+            return debug_msgs
+

@@ -28,7 +28,7 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     keywords='wechat bot',
-    packages=find_packages(),
+    packages=find_packages(exclude=("tests",)),
     python_requires='>=3.5',
     install_requires=['requests'],
 )
