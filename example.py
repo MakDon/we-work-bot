@@ -21,7 +21,7 @@ def hello_world_twice():
 def run_forever():
     # 每隔 60 秒发送一次 hello world
     # 使用Bot.every() 设置间隔
-    wBot(url).set_text("hello world").send()
+    wBot(url).set_text("hello world").run()
 
 
 # ============== 定时提醒 =======================
