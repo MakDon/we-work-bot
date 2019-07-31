@@ -14,7 +14,7 @@ def hello_world():
 def hello_world_twice():
     bot = wBot(url)
     bot.set_text('hello world').send()
-    bot.set_text('hello world again').sned()
+    bot.set_text('hello world again').send()
 
 
 # ================= run ========================
