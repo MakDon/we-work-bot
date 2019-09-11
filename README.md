@@ -14,8 +14,8 @@ requests
 ## Quick Start
 
     from weworkbot import Bot as wBot
-    def hello_world():
-        bot = wBot(url).set_text("hello world").send()
+    
+    bot = wBot(url).set_text("hello world").send()
         
 ## 更多例子
 
