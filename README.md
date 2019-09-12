@@ -15,7 +15,7 @@ requests
 
     from weworkbot import Bot as wBot
     
-    bot = wBot(url).set_text("hello world").send()
+    wBot(url).set_text("hello world").send()
         
 ## 更多例子
 
