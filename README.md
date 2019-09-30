@@ -1,7 +1,8 @@
 # we-work-bot 
 [![pipy](https://img.shields.io/pypi/v/weworkbot?color=blue)](https://pypi.org/project/weworkbot/) [![Build Status](https://travis-ci.com/MakDon/we-work-bot.svg?branch=master)](https://travis-ci.com/MakDon/we-work-bot)    
 对企业微信群聊机器人进行封装以方便使用的框架  
-企业微信群聊机器人官方文档点[这里](https://work.weixin.qq.com/api/doc#90000/90136/91770)  
+企业微信群聊机器人官方文档点[这里](https://work.weixin.qq.com/api/doc#90000/90136/91770)   
+鹅厂同学的加料版企业微信机器人可以参考 [wxwork_robotd](https://github.com/owt5008137/wxwork_robotd) 和 [DiaoBot](https://github.com/Bokjan/DiaoBot)
 
 ## dependencies  
 Python 3.5+   
