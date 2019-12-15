@@ -4,7 +4,7 @@
 企业微信群聊机器人官方文档点[这里](https://work.weixin.qq.com/api/doc#90000/90136/91770)   
 鹅厂同学的加料版企业微信机器人可以参考 [wxwork_robotd](https://github.com/owt5008137/wxwork_robotd) 和 [DiaoBot](https://github.com/Bokjan/DiaoBot)
 
-## dependencies  
+## Dependencies  
 Python 3.5+   
 requests
 
@@ -25,7 +25,7 @@ requests
 ## 更新计划
 
 - [x] 添加单测以及 Travis CI 配置
-- [ ] 添加 Markdown 类型消息的支持
+- [x] 添加 Markdown 类型消息的支持
 - [ ] 添加 image 类型消息的支持
 - [ ] 添加 图文类型消息的支持
 

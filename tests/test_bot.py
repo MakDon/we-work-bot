@@ -23,7 +23,7 @@ def test_hello_world():
 def test_hello_world_twice():
     bot = wBot(url)
     msg1 = bot.set_text('hello world').send()
-    msg2 = bot.set_text('hello world again').send()
+    msg2 = bot.set_text('hello world again', type='markdown').send()
     assert msg1 == ("https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=fakekey",
                     {
                         "msgtype": "text",
@@ -36,11 +36,9 @@ def test_hello_world_twice():
                     )
     assert msg2 == ("https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=fakekey",
                    {
-                    "msgtype": "text",
-                    "text": {
+                    "msgtype": "markdown",
+                    "markdown": {
                         "content": "hello world again",
-                        "mentioned_list": [],
-                        "mentioned_mobile_list": []
                         }
                     }
                    )

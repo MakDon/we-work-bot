@@ -14,7 +14,7 @@ def hello_world():
 def hello_world_twice():
     bot = wBot(url)
     bot.set_text('hello world').send()
-    bot.set_text('hello world again').send()
+    bot.set_text('<font color="info">Hello world</font>', type='markdown').send()
 
 
 # ================= run ========================
@@ -59,8 +59,9 @@ def render_text(arg1, arg2, arg3=True):
 
 def foo4():
     # 当同时调用了 render_text 与 set_text 时，优先调用 render_text
+    # type 选项: 'text', 'markdown', 默认为 text
     wBot(url)\
-        .render_text(render_text, args=['render ', 'with '], kwargs={'arg3': 'function'})\
+        .render_text(render_text, args=['render ', 'with '], kwargs={'arg3': 'function'}, type='text')\
         .check(check_something, args=['arg1', 'arg2'], kwargs={'arg3': 'arg3'})\
         .every(30)\
         .run()

@@ -15,7 +15,7 @@ class Bot(Thread):
 
     def __init__(self, url):
         super().__init__()
-        self.msg_type = 'text'
+        self.msg_type = ''
         assert re.match(r'https://qyapi.weixin.qq.com/cgi-bin/webhook/send\?key=', url)
         self.url = url
         self._sleep_seconds = 60
@@ -67,7 +67,7 @@ class Bot(Thread):
         self._check_kwargs = kwargs or {}
         return self
 
-    def __check__(self):
+    def __check(self):
         """
         Function to call the callback function and get a bool value to determine whether to send the message
         :return: bool
@@ -76,21 +76,25 @@ class Bot(Thread):
             return self._check_fn(*self._check_args, **self._check_kwargs)
         return True
 
-    def set_text(self, text):
+    def set_text(self, text="", type='text'):
         assert isinstance(text, str)
+        assert isinstance(type, str)
+        self.msg_type = type
         self._text = text
         return self
 
-    def render_text(self, fn, args, kwargs):
+    def render_text(self, fn, args=None, kwargs=None, type='text'):
+        assert isinstance(type, str)
         assert isinstance(fn, types.FunctionType)
         assert args is None or isinstance(args, list)
         assert kwargs is None or isinstance(kwargs, dict)
+        self.msg_type = type
         self._text_render_fn = fn
         self._text_render_args = args or []
         self._text_render_kwargs = kwargs or {}
         return self
 
-    def __get_text__(self):
+    def __get_text(self):
         if self._text_render_fn:
             return self._text_render_fn(*self._text_render_args, **self._text_render_kwargs)
         elif self._text:
@@ -119,31 +123,57 @@ class Bot(Thread):
         return self
 
     def send(self):
+        if self.msg_type == '':
+            raise ValueError("Empty content")
         if self.msg_type == 'text':
-            req_body = {
-                        "msgtype": "text",
-                        "text": {
-                                "content": self.__get_text__(),
-                                "mentioned_list": self._mentioned_list,
-                                "mentioned_mobile_list": self._mentioned_mobile_list
-                                }
-                        }
-            if DEBUG or TEST:
-                return self.url, req_body
-            else:
-                rsp = requests.post(self.url, json=req_body)
-                if rsp.status_code != 200:
-                    logging.error(rsp)
+            return self._send_text()
         elif self.msg_type == 'markdown':
+            return self._send_markdown()
+        elif self.msg_type == 'image':
+            raise NotImplemented
+        elif self.msg_type == 'news':
             raise NotImplemented
         else:
             raise TypeError('Not supported message type')
+
+    def _send_text(self):
+        req_body = {
+            "msgtype": "text",
+            "text": {
+                "content": self.__get_text(),
+                "mentioned_list": self._mentioned_list,
+                "mentioned_mobile_list": self._mentioned_mobile_list
+            }
+        }
+        if DEBUG or TEST:
+            return self.url, req_body
+        else:
+            rsp = requests.post(self.url, json=req_body)
+            if rsp.status_code != 200:
+                logging.error(rsp)
+
+    def _send_markdown(self):
+        if self._mentioned_list or self._mentioned_mobile_list:
+            logging.warning('Msg type Markdown does not support mentioning')
+        req_body = {
+            "msgtype": "markdown",
+            "markdown": {
+                "content": self.__get_text(),
+            }
+        }
+        if DEBUG or TEST:
+            return self.url, req_body
+        else:
+            rsp = requests.post(self.url, json=req_body)
+            if rsp.status_code != 200:
+                logging.error(rsp)
+
 
     def run(self):
         debug_msgs = []
         while self._send_counter and self._check_counter:
             self._check_counter -= 1
-            if self.__check__():
+            if self.__check():
                 if DEBUG or TEST:
                     msg = self.send()
                     debug_msgs.append(msg)
@@ -153,4 +183,3 @@ class Bot(Thread):
             time.sleep(self._sleep_seconds)
         if DEBUG or TEST:
             return debug_msgs
-
