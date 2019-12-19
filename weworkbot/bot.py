@@ -5,6 +5,8 @@ import time
 import sys
 import re
 import os
+import base64
+import hashlib
 from threading import Thread
 
 DEBUG = sys.flags.debug or 'pydevd' in sys.modules
@@ -30,6 +32,7 @@ class Bot(Thread):
         self._mentioned_list = []
         self._mentioned_mobile_list = []
         self._send_counter = -1
+        self._image_path = ''
 
     def every(self, second=0, minute=0, hour=0, day=0):
         """
@@ -77,10 +80,22 @@ class Bot(Thread):
         return True
 
     def set_text(self, text="", type='text'):
-        assert isinstance(text, str)
+        self.__set_content(text, type)
+        return self
+
+    def set_image_path(self, path):
+        # TODO: check format of the file. Only png&jpg supported
+        self.__set_content(path, type='image')
+        return self
+
+    def __set_content(self, content, type):
+        assert isinstance(content, str)
         assert isinstance(type, str)
         self.msg_type = type
-        self._text = text
+        if type == 'text' or type == 'markdown':
+            self._text = content
+        elif type == 'image':
+            self._image_path = content
         return self
 
     def render_text(self, fn, args=None, kwargs=None, type='text'):
@@ -130,7 +145,7 @@ class Bot(Thread):
         elif self.msg_type == 'markdown':
             return self._send_markdown()
         elif self.msg_type == 'image':
-            raise NotImplemented
+            return self._send_image()
         elif self.msg_type == 'news':
             raise NotImplemented
         else:
@@ -167,6 +182,27 @@ class Bot(Thread):
             rsp = requests.post(self.url, json=req_body)
             if rsp.status_code != 200:
                 logging.error(rsp)
+
+    def _send_image(self):
+        if self._mentioned_list or self._mentioned_mobile_list:
+            logging.warning('Msg type Markdown does not support mentioning')
+        # TODO: read from file
+        # TODO: check file format
+        image_file = open(self._image_path, 'rb')
+        image_in_byte = image_file.read()
+        image_file.close()
+        image_b64 = base64.b64encode(image_in_byte).decode('utf-8')
+        md5er = hashlib.md5()
+        md5er.update(image_in_byte)
+        image_md5 = md5er.digest().hex()
+        req_body = {
+            "msgtype": "image",
+            "image": {
+                "base64": image_b64,
+                "md5": image_md5
+            }
+        }
+        requests.post(self.url, json=req_body)
 
 
     def run(self):

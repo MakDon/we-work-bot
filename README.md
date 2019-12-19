@@ -17,7 +17,8 @@ requests
     from weworkbot import Bot as wBot
     
     wBot(url).set_text("hello world").send()
-        
+    wBot(url).set_text('<font color="info">Hello world</font>', type='markdown').send()
+    wBot(url).set_image_path('test.jpeg').send()
 ## 更多例子
 
 封装了定时任务、提醒列表、发送计数等功能，详见[examples](https://github.com/MakDon/we-work-bot/blob/master/example.py)
