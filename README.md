@@ -27,7 +27,8 @@ requests
 
 - [x] 添加单测以及 Travis CI 配置
 - [x] 添加 Markdown 类型消息的支持
-- [ ] 添加 image 类型消息的支持
+- [x] 添加 image 类型消息的支持
+- [ ] 添加 CLI 支持
 - [ ] 添加 图文类型消息的支持
 
 ## Contributing

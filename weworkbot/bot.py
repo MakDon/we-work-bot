@@ -138,6 +138,7 @@ class Bot(Thread):
         return self
 
     def send(self):
+        assert self.url is not None
         if self.msg_type == '':
             raise ValueError("Empty content")
         if self.msg_type == 'text':
@@ -186,8 +187,8 @@ class Bot(Thread):
     def _send_image(self):
         if self._mentioned_list or self._mentioned_mobile_list:
             logging.warning('Msg type Markdown does not support mentioning')
-        # TODO: read from file
         # TODO: check file format
+        # TODO: check file size
         image_file = open(self._image_path, 'rb')
         image_in_byte = image_file.read()
         image_file.close()
